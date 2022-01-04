@@ -31,7 +31,7 @@ var InvokeGinStart = fx.Provide(func(logger *logrus.Logger, t targets) *gin.Engi
 })
 
 
-var InvokeGrpc = fx.Invoke(func(logger *logrus.Logger) {
+var InvokeGrpc = fx.Invoke(func(logger *logrus.Logger, templateServer *template.ServerTemplate) {
 	go func() {
 		logger.Info("Grpc start")
 		lis, err := net.Listen("tcp", ":8082")
@@ -41,7 +41,7 @@ var InvokeGrpc = fx.Invoke(func(logger *logrus.Logger) {
 		}
 		s := grpc.NewServer()
 
-		tRpc.RegisterTemplateRpcServiceServer(s, &template.ServerTemplate{})
+		tRpc.RegisterTemplateRpcServiceServer(s, templateServer)
 
 		e := s.Serve(lis)
 		if e != nil {

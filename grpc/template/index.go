@@ -7,21 +7,26 @@ import (
 	"work-order-console/service"
 )
 
+var RegServerTemplate = fx.Provide(func(templateService service.TemplateServiceApi) *ServerTemplate {
+	return &ServerTemplate{
+		templateService,
+		&tRpc.UnimplementedTemplateRpcServiceServer{},
+	}
+})
+
 type ServerTemplate struct {
+	service.TemplateServiceApi
 	*tRpc.UnimplementedTemplateRpcServiceServer
+
 }
 
-func (p *ServerTemplate)AddTemplate(context.Context, *tRpc.TemplateRpcAdd) (*tRpc.Success, error) {
-	return nil,nil
+func (p *ServerTemplate)AddTemplate(c context.Context, request *tRpc.TemplateRpcAdd) (*tRpc.Success, error) {
+	p.SaveTemplate(request.Name)
+	return &tRpc.Success{Ok: "SUCCESS"}, nil
 }
 
 func (p *ServerTemplate) List(context.Context, *tRpc.PageList) (*tRpc.Templates, error) {
-	var templateService service.TemplateServiceApi
-	fx.Populate(&templateService)
-	// todo 以来注入为什么失败
-	arr := templateService.QueryAll()
-
-
+	arr := p.QueryAll()
 	var list []*tRpc.TemplateVo
 	for _, item := range *arr{
 		var vo tRpc.TemplateVo

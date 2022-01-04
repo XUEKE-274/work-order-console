@@ -5,6 +5,7 @@ import (
 	"work-order-console/config"
 	"work-order-console/dao"
 	"work-order-console/db"
+	"work-order-console/grpc"
 	"work-order-console/logger"
 	"work-order-console/rpc"
 	"work-order-console/service"
@@ -19,6 +20,7 @@ var Model = fx.Options(
 	service.Model,
 	dao.Model,
 	rpc.Model,
+	grpc.Model,
 )
 // @Title 工单控制台
 // @version 1.0.0
