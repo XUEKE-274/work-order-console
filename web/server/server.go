@@ -32,19 +32,20 @@ var InvokeGinStart = fx.Provide(func(logger *logrus.Logger, t targets) *gin.Engi
 
 
 var InvokeGrpc = fx.Invoke(func(logger *logrus.Logger) {
-	logger.Info("Grpc start")
-	lis, err := net.Listen("tcp", ":8082")
+	go func() {
+		logger.Info("Grpc start")
+		lis, err := net.Listen("tcp", ":8082")
 
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
+		if err != nil {
+			log.Fatalf("failed to listen: %v", err)
+		}
+		s := grpc.NewServer()
 
-	tRpc.RegisterTemplateRpcServiceServer(s, &template.ServerTemplate{})
+		tRpc.RegisterTemplateRpcServiceServer(s, &template.ServerTemplate{})
 
-	e := s.Serve(lis)
-	if e != nil {
-		panic("init grpc error ")
-	}
-
+		e := s.Serve(lis)
+		if e != nil {
+			panic("init grpc error ")
+		}
+	}()
 })
