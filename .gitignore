@@ -1,0 +1,11 @@
+.idea/
+/java-work-service.iml
+/target
+java-work-service.iml
+*.iml
+**/.settings
+**/.vscode
+*.log
+main
+vendor
+/application.yml

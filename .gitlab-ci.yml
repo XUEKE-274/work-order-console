@@ -1,0 +1,7 @@
+include:
+  - project: 'shared-golib/ci-config'
+    ref: master
+    file: '/templates/golang/v1/.gitlab-ci-template.yml'
+variables:
+  PROJECT_NAME: work-order-console
+  BUILD_BASE_IMAGE: registry-in.dustess.com:9000/base/dind19-go:1.16.2

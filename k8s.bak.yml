@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: !PROJECT_NAME
+  labels:
+    app: !PROJECT_NAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: !PROJECT_NAME
+      labels:
+        app: !PROJECT_NAME
+    spec:
+      imagePullSecrets:
+        - name: dustess-registry-ci-key
+      containers:
+        - name: !PROJECT_NAME
+          image: registry-in.dustess.com:9000/!DOCKER_IMAGE_NAME:!IMAGE_TAG
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep","15"]
+          resources:
+            limits:
+              cpu: '4'
+              memory: 1.5Gi
+#            requests:
+#              cpu: 200m
+#              memory: 512Mi
+          env:
+            - name: KUBERNETES_NAMESPACE
+              value: !KUBERNETES_NAMESPACE
+            - name: JAEGER_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.hostIP
+          volumeMounts:
+            - mountPath: /app/application.yml
+              subPath: work-order-console.yml
+              name: config-work-order-console
+      volumes:
+        - name: config-work-order-console
+          configMap:
+            name: config-work-order-console
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: !PROJECT_NAME
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: !PROJECT_NAME
+  labels:
+    app: !PROJECT_NAME
+    group: kf-golang
+spec:
+  selector:
+    app: !PROJECT_NAME
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+

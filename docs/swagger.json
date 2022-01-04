@@ -1,0 +1,425 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "开发人员使用的后台运维系统",
+        "title": "工单控制台",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "basePath": "/work-order-console/api/v1",
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "登陆",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登陆管理"
+                ],
+                "summary": "登陆",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "get": {
+                "description": "退出登陆",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登陆管理"
+                ],
+                "summary": "退出登陆",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Auth",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/pubKey": {
+            "get": {
+                "description": "获取公钥",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统关系"
+                ],
+                "summary": "获取公钥",
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "$ref": "#/definitions/response.PubKeyResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "用户列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "用户列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pageIndex",
+                        "name": "pageIndex",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "pageSize",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色",
+                        "name": "role",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Auth",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "$ref": "#/definitions/response.UserListResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "创建用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "创建用户",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UserAddRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Auth",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "description": "用户详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "用户详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Auth",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "$ref": "#/definitions/response.UserDetailResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "修改用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UserModifyRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Auth",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "删除用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Auth",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "request.LoginRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "description": "密码， 使用公钥加密后传输",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "request.UserAddRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "角色",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "request.UserModifyRequest": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "description": "角色",
+                    "type": "string"
+                }
+            }
+        },
+        "response.PubKeyResponse": {
+            "type": "object",
+            "properties": {
+                "pubKey": {
+                    "description": "公钥， X509 HEX 格式",
+                    "type": "string"
+                }
+            }
+        },
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "提示码",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "数据"
+                },
+                "message": {
+                    "description": "提示信息",
+                    "type": "string"
+                },
+                "requestId": {
+                    "description": "请求id",
+                    "type": "string"
+                }
+            }
+        },
+        "response.UserDetailResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "用户id",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "用户角色",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "response.UserListResponse": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "description": "总数",
+                    "type": "integer"
+                },
+                "users": {
+                    "description": "用户数组",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.UserDetailResponse"
+                    }
+                }
+            }
+        }
+    }
+}

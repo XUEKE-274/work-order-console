@@ -1,0 +1,11 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "开发人员使用的后台运维系统",
+        "title": "工单控制台",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "basePath": "/work-order-console/api/v1",
+    "paths": {}
+}

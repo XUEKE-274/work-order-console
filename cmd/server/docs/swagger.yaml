@@ -1,0 +1,8 @@
+basePath: /work-order-console/api/v1
+info:
+  contact: {}
+  description: 开发人员使用的后台运维系统
+  title: 工单控制台
+  version: 1.0.0
+paths: {}
+swagger: "2.0"

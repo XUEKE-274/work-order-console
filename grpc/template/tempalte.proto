@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option go_package = "./tRpc";
+
+service TemplateRpcService {
+  rpc AddTemplate(TemplateRpcAdd) returns (Success){}
+  rpc List(PageList) returns (Templates){}
+}
+
+message Success {
+  string ok = 1;
+}
+
+message TemplateRpcAdd {
+  string name = 1;
+}
+
+message PageList {
+  string state = 1;
+  string name = 2;
+}
+
+message Templates {
+  repeated TemplateVo templates = 1;
+}
+
+message TemplateVo {
+  string id = 1;
+  string createBy = 2;
+  string modifyBy = 3;
+  string createTime = 4;
+  string modifyTime = 5;
+
+  string state = 6;
+  string name = 7;
+}
