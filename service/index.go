@@ -9,4 +9,5 @@ var Model = fx.Options(
 	regSessionService,
 	regRsaService,
 	regTemplateService,
+	regGrpcService,
 )

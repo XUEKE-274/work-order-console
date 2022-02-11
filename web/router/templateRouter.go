@@ -11,4 +11,8 @@ const Template = apiPrefix + "/template"
 var regTemplateRouter = fx.Invoke(func(gin *gin.Engine, template controller.TemplateControllerApi) {
 	ticketGin := gin.Group(Template)
 	ticketGin.GET("/list", template.QueryAll)
+	ticketGin.GET("/grpc/list", template.GrpcQuery)
+	ticketGin.POST("/grpc/save", template.GrpcSave)
+
+
 })

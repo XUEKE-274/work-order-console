@@ -8,6 +8,7 @@ import (
 )
 
 var RegServerTemplate = fx.Provide(func(templateService service.TemplateServiceApi) *ServerTemplate {
+	println("000000000000000000000000000000000")
 	return &ServerTemplate{
 		templateService,
 		&tRpc.UnimplementedTemplateRpcServiceServer{},
