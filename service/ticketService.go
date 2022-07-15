@@ -98,6 +98,6 @@ func toDetailVo(e *entity.TicketEntity) *response.TicketDetailResponse {
 	return &response.TicketDetailResponse{
 		TicketNumber:    e.TicketNumber,
 		Id:              e.Id,
-		CustomFieldList: e.CustomFieldList,
+
 	}
 }

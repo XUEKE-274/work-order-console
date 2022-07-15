@@ -2,21 +2,23 @@ package entity
 
 type TicketEntity struct {
 	BaseEntity
-	Id              string             `bson:"_id"`
-	TicketNumber    string             `bson:"ticketNumber"`
-	CustomFieldList *[]CustomFieldList `bson:"customFieldList"`
+	TicketNumber    string             `json:"ticketNumber"`
+	//CustomFieldList *[]CustomFieldList `json:"customFieldList"`
 }
 
 type CustomFieldList struct {
-	Id        string      `bson:"_id" json:"id"`
-	FieldType int32       `bson:"fieldType" json:"fieldType"`
-	IsFixed   bool        `bson:"isFixed" json:"isFixed"`
+	BaseEntity
+	FieldType int32       `bson:"field_type" json:"fieldType"`
+	IsFixed   bool        `bson:"is_fixed" json:"isFixed"`
 	Name      string      `bson:"name" json:"name"`
 	Value     string      `bson:"value" json:"value"`
-	Optional  *[]Optional `bson:"optional" json:"optional"`
+	TicketId  string      `json:"ticket_id"`
+
+	//Optional  *[]Optional `bson:"optional" json:"optional"`
 }
 
 type Optional struct {
-	Id    string `bson:"_id" json:"id"`
+	BaseEntity
 	Value string `bson:"value" json:"value"`
+	FieldId string `json:"field_id"`
 }

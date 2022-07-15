@@ -31,7 +31,7 @@ var regGrpcPool = fx.Provide(func() *Pool{
 		panic("grpc conn init fail")
 	}
 
-	cs := make([]*grpc.ClientConn, 2, 0)
+	cs := make([]*grpc.ClientConn, 0)
 	cs = append(cs, conn1)
 	cs = append(cs, conn2)
 
