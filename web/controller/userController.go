@@ -192,7 +192,7 @@ func (mine *userController) ListUser(c *gin.Context) {
 
 	for _, item := range *data {
 		var r response.UserDetailResponse
-		r.Id = item.Id.Hex()
+		//r.Id = item.Id.Hex()
 		r.Username = item.Username
 		r.Role = item.Role
 		users = append(users, r)
@@ -230,7 +230,7 @@ func (mine *userController) DetailUser(c *gin.Context) {
 		return
 	}
 	var resp = response.UserDetailResponse{}
-	resp.Id = res.Id.Hex()
+	//resp.Id = res.Id.Hex()
 	resp.Username = res.Username
 	resp.Role = res.Role
 

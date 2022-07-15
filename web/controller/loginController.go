@@ -69,7 +69,7 @@ func (mine *loginController)Login(c *gin.Context)  {
 		return
 	}
 	// do login by userService
-	userPo, err := mine.userService.GetByUsername(params.Username)
+	userPo, err := mine.userService.GetByUsernameMysql(params.Username)
 	if err != nil {
 		log.Error("dao error ")
 		response.ErrorCodeResponse(c, errorCodeEnum.USERNAME_NOT_EXIST)

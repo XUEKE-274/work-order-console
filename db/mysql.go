@@ -15,12 +15,14 @@ var mysql = fx.Provide(func(logger *logrus.Logger, config *config.Config) *gorm.
 	db.LogMode(true) // debug
 	db.SingularTable(true) // 单数
 	db.SetLogger(logger)
-	logger.Info("mysql table init >>> ")
-	db.AutoMigrate(&entity.TemplateEntity{})
-	db.AutoMigrate(&entity.TicketEntity{})
-	db.AutoMigrate(&entity.CustomFieldList{})
-	db.AutoMigrate(&entity.Optional{})
-	db.AutoMigrate(&entity.UserEntity{})
-	db.AutoMigrate(&entity.VersionEntity{})
+	if config.TableInit == "ON" {
+		logger.Info("mysql table init")
+		db.AutoMigrate(&entity.TemplateEntity{})
+		db.AutoMigrate(&entity.TicketEntity{})
+		db.AutoMigrate(&entity.CustomFieldList{})
+		db.AutoMigrate(&entity.Optional{})
+		db.AutoMigrate(&entity.UserEntity{})
+		db.AutoMigrate(&entity.VersionEntity{})
+	}
 	return db
 })

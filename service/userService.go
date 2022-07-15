@@ -4,7 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"github.com/jinzhu/gorm"
 	"go.uber.org/fx"
 	"time"
 	"work-order-console/dao"
@@ -28,20 +28,23 @@ type UserServiceApi interface {
 	ListUser(params *request.UserListRequest) (*[]entity.UserEntity, int64, error)
 	GetByUsername(username string) (*entity.UserEntity,error)
 	MatchCredential(pwd string, dbPwd string) bool
+	GetByUsernameMysql(username string) (*entity.UserEntity,error)
 }
 
 
 type userService struct {
 	userDao dao.UserDaoApi
 	logger logger.NewLogger
+	db *gorm.DB
 }
 
 
 
-var regUserService = fx.Provide(func(userDao dao.UserDaoApi, logger logger.NewLogger) UserServiceApi {
+var regUserService = fx.Provide(func(userDao dao.UserDaoApi, logger logger.NewLogger, db *gorm.DB) UserServiceApi {
 	return &userService{
 		userDao,
 		logger,
+		db,
 	}
 })
 
@@ -52,6 +55,19 @@ func (mine *userService)GetByUsername(username string) (*entity.UserEntity,error
 	}
 	return r, nil
 }
+
+func (mine *userService)GetByUsernameMysql(username string) (*entity.UserEntity,error) {
+
+	var u entity.UserEntity
+
+
+	mine.db.First(&u).Where("username = {}", username)
+
+
+
+	return &u, nil
+}
+
 
 func (mine *userService) MatchCredential(pwd string, dbPwd string) bool  {
 	// dbPwd = hash (16) + salt(16)
@@ -82,7 +98,7 @@ func (mine *userService) AddUser(username string, password string, role enum.Rol
 
 func doAdd(username string, password string, role enum.RoleEnum, userDao dao.UserDaoApi) error{
 	var user = entity.UserEntity{}
-	user.Id = primitive.NewObjectID()
+	//user.Id = primitive.NewObjectID()
 	user.Username = username
 	user.EnPwd = buildEnPwd(password)
 	user.Role = role

@@ -28,6 +28,7 @@ type RedisDb struct {
 
 type LoginConfig struct {
 	Rsa string
+	TableInit string
 }
 
 type Config struct {
@@ -56,6 +57,7 @@ var YmlConfig = fx.Provide(func() *Config{
 		},
 		LoginConfig{
 			Rsa: viper.GetString("application.login.rsa"),
+			TableInit: viper.GetString("application.table.init"),
 		},
 		Mysql{
 			MysqlUri: viper.GetString("mysql.uri"),
