@@ -77,7 +77,7 @@ func (mine *loginController)Login(c *gin.Context)  {
 	}
 	// Decrypt
 	var pwd string
-	if mine.config.Rsa == "ON" {
+	if mine.config.Rsa == "true" {
 		pwd = mine.rsaService.Decrypt(params.Password)
 	}else {
 		pwd = params.Password
