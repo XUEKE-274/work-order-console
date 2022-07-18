@@ -61,7 +61,7 @@ func (mine *userService)GetByUsernameMysql(username string) (*entity.UserEntity,
 	var u entity.UserEntity
 
 
-	mine.db.First(&u).Where("username = {}", username)
+	mine.db.First(&u).Where("username = ?", username)
 
 
 

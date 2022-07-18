@@ -8,9 +8,11 @@ import (
 
 const System = apiPrefix + "/system"
 var regSystemRouter = fx.Invoke(func(gin *gin.Engine, systemController controller.SystemControllerApi) {
-	ticketGin := gin.Group(System)
+	router := gin.Group(System)
 
-	ticketGin.GET("/pubKey", systemController.FetchPubKey)
+	router.GET("/pubKey", systemController.FetchPubKey)
+	router.GET("/test", systemController.Test)
+
 
 
 })

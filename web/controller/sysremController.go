@@ -9,17 +9,20 @@ import (
 
 type SystemControllerApi interface {
 	FetchPubKey(c *gin.Context)
+	Test(*gin.Context)
 }
 
 type systemController struct {
 	rsaService service.RsaServiceApi
+	logService service.LockServiceApi
 }
 
 
 
-var regSystemController = fx.Provide(func(rsaService service.RsaServiceApi) SystemControllerApi {
+var regSystemController = fx.Provide(func(rsaService service.RsaServiceApi, lockService service.LockServiceApi) SystemControllerApi {
 	return &systemController{
 		rsaService,
+		lockService,
 	}
 })
 
@@ -36,4 +39,13 @@ func (mine *systemController) FetchPubKey(c *gin.Context) {
 	var data response.PubKeyResponse
 	data.PubKey = pubStr
 	response.DataResponse(c, data)
+}
+
+func (mine *systemController)Test(c *gin.Context)  {
+	r := mine.logService.TryLock("test")
+	data := make(map[string]interface{})
+	data["lock"] = r
+	response.DataResponse(c, data)
+
+
 }
