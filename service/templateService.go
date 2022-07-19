@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"go.uber.org/fx"
 	"time"
+	"work-order-console/domain/dto"
 	"work-order-console/domain/entity"
 	"work-order-console/logger"
 	"work-order-console/utils"
@@ -12,6 +13,7 @@ import (
 type TemplateServiceApi interface {
 	QueryAll() *[]entity.TemplateEntity
 	SaveTemplate(name string)
+	List() *[]dto.TemplateDto
 }
 
 type templateService struct {
@@ -22,6 +24,12 @@ type templateService struct {
 func (p *templateService)QueryAll() *[]entity.TemplateEntity {
 	var res []entity.TemplateEntity
 	p.Find(&res)
+	return &res
+}
+func (p *templateService) List() *[]dto.TemplateDto  {
+
+	var res []dto.TemplateDto
+	p.Table("template_entity").Preload("Workflow").Preload("Fields").Find(&res)
 	return &res
 }
 

@@ -11,7 +11,7 @@ import (
 )
 
 type TemplateControllerApi interface {
-	QueryAll(c *gin.Context)
+	List(c *gin.Context)
 	GrpcQuery(c *gin.Context)
 	GrpcSave(c *gin.Context)
 	CurrentSave(ctx *gin.Context)
@@ -33,8 +33,8 @@ var regTemplateController = fx.Provide(func(templateService service.TemplateServ
 	}
 })
 
-func (p *templateController)QueryAll(c *gin.Context)  {
-	res := p.TemplateServiceApi.QueryAll()
+func (p *templateController) List(c *gin.Context)  {
+	res := p.TemplateServiceApi.List()
 	response.DataResponse(c, res)
 }
 
