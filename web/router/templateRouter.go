@@ -9,10 +9,11 @@ import (
 const Template = apiPrefix + "/template"
 
 var regTemplateRouter = fx.Invoke(func(gin *gin.Engine, template controller.TemplateControllerApi) {
-	ticketGin := gin.Group(Template)
-	ticketGin.GET("/list", template.QueryAll)
-	ticketGin.GET("/grpc/list", template.GrpcQuery)
-	ticketGin.POST("/grpc/save", template.GrpcSave)
+	templateGin := gin.Group(Template)
+	templateGin.GET("/list", template.QueryAll)
+	templateGin.GET("/grpc/list", template.GrpcQuery)
+	templateGin.POST("/grpc/save", template.GrpcSave)
+	templateGin.POST("/save", template.CurrentSave)
 
 
 })

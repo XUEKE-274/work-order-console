@@ -57,7 +57,7 @@ func (p *templateController)GrpcSave(c *gin.Context)  {
 }
 func (p *templateController)CurrentSave(c *gin.Context)  {
 	log := p.NewInstance(c)
-	params := &request.NewTemplateAddRequest{}
+	params := request.NewTemplateAddRequest{}
 	log.Info("params = ", params)
 	e := c.BindJSON(&params)
 	if e != nil {

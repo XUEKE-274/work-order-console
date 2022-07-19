@@ -2,13 +2,15 @@ package service
 
 import (
 	"context"
+	"github.com/jinzhu/gorm"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
 	"log"
-	"work-order-console/db"
+	"time"
 	"work-order-console/domain/entity"
 	"work-order-console/grpc/template/tRpc"
 	"work-order-console/logger"
+	"work-order-console/utils"
 	"work-order-console/web/request"
 )
 
@@ -19,7 +21,7 @@ type GrpcServiceApi interface {
 }
 type grpcService struct {
 	logger.NewLogger
-	db *db.Mongodb
+	db *gorm.DB
 }
 
 func (p *grpcService) Query() *[]entity.TemplateEntity  {
@@ -51,15 +53,44 @@ func (p *grpcService) Save(name string) {
 
 
 func (p *grpcService)FullSave(templateName string, workflowName string, fields []*request.FieldRequest){
-	//client := p.db
-	// save field
-	// save workflow
+	client := p.db
 	// save template
+	templateId := utils.NewUuid()
+	t := entity.TemplateEntity{}
+	t.Id = templateId
+	t.Name = templateName
+	t.State = "ON"
+	t.ModifyTime = time.Now()
+	t.CreateTime = time.Now()
+	client.Save(&t)
+	// save workflow
+	w := entity.WorkFlowEntity{}
+	w.Id = utils.NewUuid()
+	w.TemplateId = templateId
+	w.Name = workflowName
+	w.ModifyTime = time.Now()
+	w.CreateTime = time.Now()
+	client.Save(&w)
+	// save field
+	if len(fields) != 0{
+		for _, item := range fields {
+			f := entity.FiledEntity{}
+			f.Id = utils.NewUuid()
+			f.TemplateId = templateId
+			f.ModifyTime = time.Now()
+			f.CreateTime = time.Now()
+			f.Name = item.Name
+			f.Type = item.Type
+			client.Save(&f)
+		}
+	}
+
+
 
 
 }
 
-var regGrpcService = fx.Provide(func(logger logger.NewLogger, db *db.Mongodb) GrpcServiceApi{
+var regGrpcService = fx.Provide(func(logger logger.NewLogger, db *gorm.DB) GrpcServiceApi{
 	return &grpcService{
 		logger,
 		db,
