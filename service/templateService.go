@@ -13,7 +13,7 @@ import (
 type TemplateServiceApi interface {
 	QueryAll() *[]entity.TemplateEntity
 	SaveTemplate(name string)
-	List() *[]dto.TemplateDto
+	List() *[]*dto.TemplateDto
 }
 
 type templateService struct {
@@ -26,10 +26,9 @@ func (p *templateService)QueryAll() *[]entity.TemplateEntity {
 	p.Find(&res)
 	return &res
 }
-func (p *templateService) List() *[]dto.TemplateDto  {
-
-	var res []dto.TemplateDto
-	p.Table("template_entity").Preload("Workflow").Preload("Fields").Find(&res)
+func (p *templateService) List() *[]*dto.TemplateDto  {
+	var res []*dto.TemplateDto
+	p.Preload("Workflow").Preload("Fields").Find(&res)
 	return &res
 }
 

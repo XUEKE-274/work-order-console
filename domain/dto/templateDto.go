@@ -8,3 +8,8 @@ type TemplateDto struct {
 	Fields []*entity.FiledEntity `json:"fields" gorm:"foreignkey:template_id;association_foreignkey:id"`
 
 }
+
+
+func (TemplateDto) TableName() string {
+	return "template_entity"
+}
