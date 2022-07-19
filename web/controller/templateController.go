@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
+	"work-order-console/domain/entity"
 	"work-order-console/logger"
 	"work-order-console/service"
 	"work-order-console/web/request"
@@ -65,6 +66,8 @@ func (p *templateController)CurrentSave(c *gin.Context)  {
 		response.ParamsErrorResponse(c)
 		return
 	}
-	p.FullSave(params.TemplateName, params.WorkflowName, params.Fields)
+	session := c.Value("session")
+	 u :=  session.(*entity.UserEntity)
+	p.FullSave(params.TemplateName, params.WorkflowName, params.Fields, u.Username)
 	response.NilResponse(c)
 }

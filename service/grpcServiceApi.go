@@ -17,7 +17,7 @@ import (
 type GrpcServiceApi interface {
 	Query() *[]entity.TemplateEntity
 	Save(name string)
-	FullSave(string, string, []*request.FieldRequest)
+	FullSave(string, string, []*request.FieldRequest, string)
 }
 type grpcService struct {
 	logger.NewLogger
@@ -52,7 +52,7 @@ func (p *grpcService) Save(name string) {
 }
 
 
-func (p *grpcService)FullSave(templateName string, workflowName string, fields []*request.FieldRequest){
+func (p *grpcService)FullSave(templateName string, workflowName string, fields []*request.FieldRequest, operator string){
 	client := p.db
 	// save template
 	templateId := utils.NewUuid()
@@ -62,6 +62,8 @@ func (p *grpcService)FullSave(templateName string, workflowName string, fields [
 	t.State = "ON"
 	t.ModifyTime = time.Now()
 	t.CreateTime = time.Now()
+	t.CreateBy = operator
+	t.ModifyBy = operator
 	client.Save(&t)
 	// save workflow
 	w := entity.WorkFlowEntity{}
@@ -70,6 +72,8 @@ func (p *grpcService)FullSave(templateName string, workflowName string, fields [
 	w.Name = workflowName
 	w.ModifyTime = time.Now()
 	w.CreateTime = time.Now()
+	w.CreateBy = operator
+	w.ModifyBy = operator
 	client.Save(&w)
 	// save field
 	if len(fields) != 0{
@@ -79,6 +83,8 @@ func (p *grpcService)FullSave(templateName string, workflowName string, fields [
 			f.TemplateId = templateId
 			f.ModifyTime = time.Now()
 			f.CreateTime = time.Now()
+			f.CreateBy = operator
+			f.ModifyBy = operator
 			f.Name = item.Name
 			f.Type = item.Type
 			client.Save(&f)
