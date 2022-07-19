@@ -13,6 +13,7 @@ type TemplateControllerApi interface {
 	QueryAll(c *gin.Context)
 	GrpcQuery(c *gin.Context)
 	GrpcSave(c *gin.Context)
+	CurrentSave(ctx *gin.Context)
 }
 
 
@@ -52,5 +53,18 @@ func (p *templateController)GrpcSave(c *gin.Context)  {
 		return
 	}
 	p.Save(params.Name)
+	response.NilResponse(c)
+}
+func (p *templateController)CurrentSave(c *gin.Context)  {
+	log := p.NewInstance(c)
+	params := &request.NewTemplateAddRequest{}
+	log.Info("params = ", params)
+	e := c.BindJSON(&params)
+	if e != nil {
+		log.Error("json parse error")
+		response.ParamsErrorResponse(c)
+		return
+	}
+	p.FullSave(params.TemplateName, params.WorkflowName, params.Fields)
 	response.NilResponse(c)
 }

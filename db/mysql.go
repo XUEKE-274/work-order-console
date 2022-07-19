@@ -18,6 +18,8 @@ var mysql = fx.Provide(func(logger *logrus.Logger, config *config.Config) *gorm.
 	if config.TableInit == "true" {
 		logger.Info("mysql table init")
 		db.AutoMigrate(&entity.TemplateEntity{})
+		db.AutoMigrate(&entity.WorkFlowEntity{})
+		db.AutoMigrate(&entity.FiledEntity{})
 		db.AutoMigrate(&entity.TicketEntity{})
 		db.AutoMigrate(&entity.CustomFieldList{})
 		db.AutoMigrate(&entity.Optional{})

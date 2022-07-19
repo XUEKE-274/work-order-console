@@ -5,17 +5,21 @@ import (
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
 	"log"
+	"work-order-console/db"
 	"work-order-console/domain/entity"
 	"work-order-console/grpc/template/tRpc"
 	"work-order-console/logger"
+	"work-order-console/web/request"
 )
 
 type GrpcServiceApi interface {
 	Query() *[]entity.TemplateEntity
 	Save(name string)
+	FullSave(string, string, []*request.FieldRequest)
 }
 type grpcService struct {
 	logger.NewLogger
+	db *db.Mongodb
 }
 
 func (p *grpcService) Query() *[]entity.TemplateEntity  {
@@ -45,9 +49,20 @@ func (p *grpcService) Save(name string) {
 
 }
 
-var regGrpcService = fx.Provide(func(logger logger.NewLogger) GrpcServiceApi{
+
+func (p *grpcService)FullSave(templateName string, workflowName string, fields []*request.FieldRequest){
+	//client := p.db
+	// save field
+	// save workflow
+	// save template
+
+
+}
+
+var regGrpcService = fx.Provide(func(logger logger.NewLogger, db *db.Mongodb) GrpcServiceApi{
 	return &grpcService{
 		logger,
+		db,
 	}
 })
 
