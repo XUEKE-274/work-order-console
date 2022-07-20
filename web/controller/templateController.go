@@ -35,7 +35,7 @@ var regTemplateController = fx.Provide(func(templateService service.TemplateServ
 
 func (p *templateController) List(c *gin.Context)  {
 	res := p.TemplateServiceApi.List()
-	response.DataResponse(c, res)
+	response.DataResponse(c, response.CoverTemplateResponse(res))
 }
 
 func (p *templateController)GrpcQuery(c *gin.Context)  {

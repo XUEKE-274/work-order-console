@@ -14,6 +14,7 @@ type TemplateServiceApi interface {
 	QueryAll() *[]entity.TemplateEntity
 	SaveTemplate(name string)
 	List() *[]*dto.TemplateDto
+	SqlList() *[]*dto.TemplateDto
 }
 
 type templateService struct {
@@ -27,11 +28,35 @@ func (p *templateService)QueryAll() *[]entity.TemplateEntity {
 	return &res
 }
 func (p *templateService) List() *[]*dto.TemplateDto  {
+	//var w = dto.WorkflowDto{}
 	var res []*dto.TemplateDto
-	p.Preload("Workflow").Preload("Fields").
+	p.Preload("Fields").
+		Preload("Workflow").
 		Find(&res)
 	return &res
 }
+func (p *templateService) SqlList() *[]*dto.TemplateDto  {
+	//var w = dto.WorkflowDto{}
+	var res []*dto.TemplateDto
+	//p.Raw(createSql()).Scan(&r)
+
+	return &res
+}
+func createSql() string {
+	sql := "select " +
+		"t.id   templateId , " +
+		"t.name templateName, " +
+		"w.id workflowId , " +
+		"w.name workflowName ," +
+		"f.name filedName" +
+		" from template_entity  t"  +
+		"left join workflow_entity w " +
+		" on t.id = w.template_id " +
+		"left join filed_entity f  " +
+		"on t.id = f.template_id"
+	return sql
+}
+
 
 func (p *templateService)SaveTemplate(name string)  {
 	var po entity.TemplateEntity

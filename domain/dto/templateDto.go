@@ -1,6 +1,8 @@
 package dto
 
-import "work-order-console/domain/entity"
+import (
+	"work-order-console/domain/entity"
+)
 
 type TemplateDto struct {
 	entity.TemplateEntity

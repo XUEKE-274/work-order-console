@@ -4,7 +4,7 @@ import "work-order-console/domain/entity"
 
 type WorkflowDto struct {
 	entity.WorkflowEntity
-	Nodes *[]*entity.NodeEntity
+	Nodes []*entity.NodeEntity
 }
 
 func (WorkflowDto) TableName() string {

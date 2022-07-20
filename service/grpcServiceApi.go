@@ -74,6 +74,7 @@ func (p *grpcService)FullSave(templateName string, workflowName string,
 	w.Id = workflowId
 	w.TemplateId = templateId
 	w.Name = workflowName
+	w.Type = "DEF"
 	w.ModifyTime = time.Now()
 	w.CreateTime = time.Now()
 	w.CreateBy = operator
@@ -101,6 +102,7 @@ func (p *grpcService)FullSave(templateName string, workflowName string,
 			n.Id = utils.NewUuid()
 			n.Name = item.Name
 			n.WorkflowId = workflowId
+			client.Save(&n)
 		}
 	}
 
