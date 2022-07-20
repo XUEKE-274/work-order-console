@@ -68,6 +68,10 @@ func (p *templateController)CurrentSave(c *gin.Context)  {
 	}
 	session := c.Value("session")
 	 u :=  session.(*entity.UserEntity)
-	p.FullSave(params.TemplateName, params.WorkflowName, params.Fields, u.Username)
+	p.FullSave(params.TemplateName,
+		params.WorkflowName,
+		params.Fields,
+		params.Nodes,
+		u.Username)
 	response.NilResponse(c)
 }

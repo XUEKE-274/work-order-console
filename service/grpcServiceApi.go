@@ -17,7 +17,7 @@ import (
 type GrpcServiceApi interface {
 	Query() *[]entity.TemplateEntity
 	Save(name string)
-	FullSave(string, string, []*request.FieldRequest, string)
+	FullSave(string, string, []*request.FieldRequest, []*request.NodeRequest,string)
 }
 type grpcService struct {
 	logger.NewLogger
@@ -52,7 +52,10 @@ func (p *grpcService) Save(name string) {
 }
 
 
-func (p *grpcService)FullSave(templateName string, workflowName string, fields []*request.FieldRequest, operator string){
+func (p *grpcService)FullSave(templateName string, workflowName string,
+	fields []*request.FieldRequest,
+	nodes []*request.NodeRequest,
+	operator string){
 	client := p.db
 	// save template
 	templateId := utils.NewUuid()
@@ -66,8 +69,9 @@ func (p *grpcService)FullSave(templateName string, workflowName string, fields [
 	t.ModifyBy = operator
 	client.Save(&t)
 	// save workflow
-	w := entity.WorkFlowEntity{}
-	w.Id = utils.NewUuid()
+	w := entity.WorkflowEntity{}
+	workflowId := utils.NewUuid()
+	w.Id = workflowId
 	w.TemplateId = templateId
 	w.Name = workflowName
 	w.ModifyTime = time.Now()
@@ -91,6 +95,14 @@ func (p *grpcService)FullSave(templateName string, workflowName string, fields [
 		}
 	}
 
+	if len(nodes) != 0 {
+		for _, item := range nodes {
+			n := entity.NodeEntity{}
+			n.Id = utils.NewUuid()
+			n.Name = item.Name
+			n.WorkflowId = workflowId
+		}
+	}
 
 
 

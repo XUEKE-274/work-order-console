@@ -1,6 +1,6 @@
 package entity
 
-type WorkFlowEntity struct {
+type WorkflowEntity struct {
 	BaseEntity
 	TemplateId string `json:"templateId"`
 	Name string `json:"name"`
