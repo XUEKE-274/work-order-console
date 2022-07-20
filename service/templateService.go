@@ -27,33 +27,40 @@ func (p *templateService)QueryAll() *[]entity.TemplateEntity {
 	p.Find(&res)
 	return &res
 }
+
 func (p *templateService) List() *[]*dto.TemplateDto  {
 	//var w = dto.WorkflowDto{}
 	var res []*dto.TemplateDto
 	p.Preload("Fields").
-		Preload("Workflow").
+		Preload("Workflow.Nodes").
 		Find(&res)
 	return &res
 }
 func (p *templateService) SqlList() *[]*dto.TemplateDto  {
-	//var w = dto.WorkflowDto{}
+	r := struct {
+		TemplateId string
+		TemplateName string
+		TemplateState string
+		WorkflowId string
+		WorkflowName string
+		WorkflowType string
+		FiledId string
+		FiledName string
+		FiledType string
+		NodeId string
+		NodeName string
+	}{}
 	var res []*dto.TemplateDto
-	//p.Raw(createSql()).Scan(&r)
+	p.Raw(createSql()).Scan(&r)
 
 	return &res
 }
 func createSql() string {
-	sql := "select " +
-		"t.id   templateId , " +
-		"t.name templateName, " +
-		"w.id workflowId , " +
-		"w.name workflowName ," +
-		"f.name filedName" +
-		" from template_entity  t"  +
-		"left join workflow_entity w " +
-		" on t.id = w.template_id " +
-		"left join filed_entity f  " +
-		"on t.id = f.template_id"
+	sql := "select \nt.id   TemplateId , \nt.name TemplateName, \nt.state TemplateState,\nw.id WorkflowId , " +
+		"w.name WorkflowName ,\nw.type WorkflowType,\nf.id FiledId,\nf.name FiledName,\nf.type FiledType, " +
+		" n.id NodeId,\nn.name NodeName\n from template_entity  t\nleft join workflow_entity w \non t.id = w.template_id\nleft join filed_entity f \non t.id = f.template_id\nleft join node_entity n\non w.id = n.workflow_id\n"
+
+
 	return sql
 }
 
