@@ -28,7 +28,8 @@ func (p *templateService)QueryAll() *[]entity.TemplateEntity {
 }
 func (p *templateService) List() *[]*dto.TemplateDto  {
 	var res []*dto.TemplateDto
-	p.Preload("Workflow").Preload("Fields").Find(&res)
+	p.Preload("Workflow").Preload("Fields").
+		Find(&res)
 	return &res
 }
 
